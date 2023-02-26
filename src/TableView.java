@@ -20,7 +20,7 @@ public class TableView extends AnchorPane{
 	 * Layout size setting to 1 as 1080p screen.
 	 * set to 0.5 for 540p
 	 */
-	public static final double LAYOUT_SIZE = 1;
+	public static final double LAYOUT_SIZE = 0.5;
 	
 	
 	public static int colMax = (int) (32*LAYOUT_SIZE);
@@ -137,7 +137,7 @@ public class TableView extends AnchorPane{
 		double layouty = Tiles.getTileHeight()/2;
 		
 		
-		labelFontSel = new Label("Font Select");
+		labelFontSel = new Label("Font Select     @unicodepicker-jre1.8-v0.0.1");
 		labelFontSel.setLayoutX(layoutx);
 		labelFontSel.setLayoutY(layouty/2);
 		
