@@ -7,14 +7,26 @@
 # 安装
 
 ## Java 环境(JRE)
+Java可以运行在很多种操作系统中，包括Windows, Linux, MacOS等等。
 
 安装JRE1.7或1.8版本。(Java 8 即为 1.8 ) 
 
+>[华为云 Java8 SDK](https://mirrors.huaweicloud.com/java/jdk/8u202-b08/)
 ## 下载Release
 
 按照屏幕分辨率和JRE环境下载Jar文件。
 
 ![sample1](/screenshot/sampleform1.png)
+
+
+## Linux打开方法
+
+文本编辑器打开 `linux_unicodepicker_start.sh`；<br/>
+设置大括号`{}`里的路径；<br/>
+`chmod u+x linux_unicodepicker_start.sh`，给执行权限；
+`./linux_unicodepicker_start.sh`，打开。
+
+
 
 # 字体
 
