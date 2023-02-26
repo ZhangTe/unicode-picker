@@ -2,7 +2,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -22,9 +21,16 @@ public class TableView extends AnchorPane{
 	 * set to 0.5 for 540p
 	 */
 	public static final double LAYOUT_SIZE = 1;
+	
+	
 	public static int colMax = (int) (32*LAYOUT_SIZE);
 	public static int rowMax = (int) (16*LAYOUT_SIZE);
+	
+	/**
+	 * For controller Layout
+	 */
 	public static double controllerspan = 30;
+	
 	int startAt= 0x0;
 	Charcode [] chars;
 	AnchorPane table;
@@ -76,11 +82,16 @@ public class TableView extends AnchorPane{
 		    
 		}
 	};
+	/**
+	 * Focus to null to unfocus
+	 * @param c the tile to focus
+	 */
 	void focusTo (Charcode c) {
 		if(focused!=null)
 			focused.setDeFocus();
 		focused = c;
-		focused.setOnFocus();;
+		if (c != null)
+			focused.setOnFocus();;
 	}
 	public void redraw() {
 		for (int i = 0; i < chars.length ; i ++ ) {
@@ -262,7 +273,7 @@ public class TableView extends AnchorPane{
 	    xarView1 = new ImageView(XLM);
 	    //xarView1.setScaleX(2.3* LAYOUT_SIZE );
 	    //xarView1.setScaleY(2.3* LAYOUT_SIZE );
-	    xarView1.setLayoutX(layoutx);
+	    xarView1.setLayoutX(layoutx - Tiles.RECTWIDTH*0.5);
 	    xarView1.setLayoutY(layouty+controllerspan*8 );
 	    
 	    double table_height = Tiles.RECTHEIGHT * TableView.rowMax * Tiles.SPANRATIO;
@@ -280,8 +291,8 @@ public class TableView extends AnchorPane{
 	    
 	    
 	    PageSlider.setRotate(90);
-	    PageSlider.setLayoutX(table_width - table_height/2);
-	    PageSlider.setLayoutY(table_height / 2);
+	    PageSlider.setLayoutX(table_width - table_height/2 + Tiles.RECTWIDTH*0.1);
+	    PageSlider.setLayoutY(table_height / 2 - Tiles.RECTHEIGHT*0.1);
 	    //PageSlider.setW
 	    PageSlider.setPrefWidth(table_height);
 	    
@@ -335,6 +346,7 @@ public class TableView extends AnchorPane{
 	}
 	
 	void pageTo(int page) {
+		focusTo(null);
 		startAt = page;
 		startAt = startAt - startAt % colMax;
 		if (startAt > Charcode.CHARMAX-colMax*rowMax+1) 

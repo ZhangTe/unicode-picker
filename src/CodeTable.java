@@ -37,7 +37,7 @@ public class CodeTable extends Application{
 		// TODO Auto-generated method stub
 		TableView table = new TableView();
 		Scene scene = new Scene(table,TableView.colMax*Tiles.getTileWidth()*Tiles.getSpanRatio()+300,TableView.rowMax*Tiles.getTileHeight()*Tiles.getSpanRatio()+20);
-		scene.setFill(Color.BLACK);
+		//scene.setFill(Color.BLACK);
 		stage.setScene(scene);
 		stage.setX(2);
 		stage.setY(5);
