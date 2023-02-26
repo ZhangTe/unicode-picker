@@ -34,3 +34,9 @@ Java可以运行在很多种操作系统中，包括Windows, Linux, MacOS等等�
 推荐使用[天珩全字库(TH-Tshyn)](http://cheonhyeong.com/Simplified/download.html)
 
 注意：安装字体时务必对**所有用户**安装才能在程序中正确显示。
+
+# Unicode 相关链接
+
+[Unicode 15.0 码表（英语）](https://www.unicode.org/charts/)<br/>
+
+[从Unicode 官方网站下载完整 Unicode 15 码表（英语，2022-09-09） PDF 103M](https://www.unicode.org/Public/15.0.0/charts/CodeCharts.pdf)

@@ -32,3 +32,9 @@ This font may meet the needs:<br/>
 > [TH-Tshyn](http://cheonhyeong.com/English/download.html)
 
 Notice: Fonts should always be installed for **all-user** then can be loaded by this program.
+
+# Unicode Relative Links
+
+[Unicode 15.0 Character Code Charts](https://www.unicode.org/charts/)<br/>
+
+[Download Full CodeCharts 15 (English, 2022-09-09) PDF 103M from Unicode.org](https://www.unicode.org/Public/15.0.0/charts/CodeCharts.pdf)
