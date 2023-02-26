@@ -3,11 +3,11 @@
 这个Java小程序是unicode字符查看和输入器。
 
 直观简化查找字符对应的unicode码时的工作。
-
+![sample1](/screenshot/sampleform1.png)
 # 安装
 
 ## Java 环境(JRE)
-Java可以运行在很多种操作系统中，包括Windows, Linux, MacOS等等。
+Java可以运行在很多种操作系统中，包括Windows, Linux, MacOS等等。<br/>
 
 安装JRE1.7或1.8版本。(Java 8 即为 1.8 ) 
 
@@ -16,7 +16,7 @@ Java可以运行在很多种操作系统中，包括Windows, Linux, MacOS等等�
 
 按照屏幕分辨率和JRE环境下载Jar文件。
 
-![sample1](/screenshot/sampleform1.png)
+
 
 
 ## Linux打开方法
