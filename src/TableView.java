@@ -1,7 +1,10 @@
+import java.util.Locale;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -14,17 +17,22 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
-public class TableView extends AnchorPane{
+public class TableView{
 	/**
 	 * Layout size setting to 1 as 1080p screen.
 	 * set to 0.5 for 540p
 	 */
-	public static final double LAYOUT_SIZE = 0.5;
+	double LAYOUT_SIZE = 0.5;
+	final Stage stage;
 	
-	
-	public static int colMax = (int) (32*LAYOUT_SIZE);
-	public static int rowMax = (int) (16*LAYOUT_SIZE);
+	int colMax;
+	int rowMax;
+	Scene scene;
+	public Scene getTableScene() {
+		return scene;
+	}
 	
 	/**
 	 * For controller Layout
@@ -35,20 +43,29 @@ public class TableView extends AnchorPane{
 	Charcode [] chars;
 	AnchorPane table;
 	Charcode focused;
-	public TableView() {
+	public TableView(Stage stage_) {
+		stage = stage_;
+		createScene();
+		//this.getChildren().add(table)
+		redraw();
+	}
+	
+	public void createScene() {
+		
+		colMax = (int) (32*LAYOUT_SIZE);
+		rowMax = (int) (16*LAYOUT_SIZE);
 		table = new AnchorPane();
-		this.getChildren().add(table);
+		scene = new Scene(table,colMax*Tiles.getTileWidth()*Tiles.getSpanRatio()+300,rowMax*Tiles.getTileHeight()*Tiles.getSpanRatio()+20);
 		chars = new Charcode[colMax*rowMax];
 		init();
-		
 		for (int i = 0; i < colMax*rowMax; i ++ ) {
 			chars[i]=new Charcode();
 			table.getChildren().addAll(chars[i]);
 			chars[i].setOnMouseClicked(charcodeOnclickHandler);
 		}
 		
-		redraw();
 	}
+	
 	
 	public EventHandler charcodeOnclickHandler = new EventHandler(){
 		@Override
@@ -60,7 +77,7 @@ public class TableView extends AnchorPane{
 				InTf.setText(InTf.getText() + s);
 			XL.setText(s);
 			
-			XL.setFont(Charcode.bigFont[cc.getFontIndex()]);
+			XL.setFont(Charcode.bigFonts[cc.getFontIndex()]);
 		    Image XLM = XL.snapshot(null, null);
 		    
 		    //cc_.setTile(cc.getCode());
@@ -69,14 +86,15 @@ public class TableView extends AnchorPane{
 		    //table.getChildren().add(cc_);
 		    Image XLM2= cc.snapshot(null, null);
 		    
-		    /*
+		    
 		    //for debug
 		    int canplay = Charcode.FONTS[Charcode.FONT_CHOOSED].canDisplayUpTo(s);
 		    if (cc.fontidx < Charcode.FONTS.length)
 		    System.out.println(s + " font :" +cc.fontidx + ": " + Charcode.FONTS[cc.fontidx] 
-		    		+ "; choosed font"+Charcode.FONT_CHOOSED + " " + Charcode.FONTS[Charcode.FONT_CHOOSED] +  " can play " + canplay);
+		    		+ "; choosed font"+Charcode.FONT_CHOOSED + " " + Charcode.FONTS[Charcode.FONT_CHOOSED] 
+		    		+ "(en=" +  Charcode.FONTS[Charcode.FONT_CHOOSED].getFamily(Locale.ENGLISH) +") can play " + canplay);
 		    else System.out.println("cannot display");
-		    //----*/
+		    //----
 		    xarView1.setImage(XLM);
 		    xarView2.setImage(XLM2);
 		    
@@ -102,7 +120,7 @@ public class TableView extends AnchorPane{
 	
 	public void changeFont(int f) {
 		System.out.print(Charcode.FONTS[f].getFontName());
-		XL.setFont(Charcode.bigFont[f]);
+		XL.setFont(Charcode.bigFonts[f]);
 		/*InTf.setStyle(".text-field{\r\n"
 				+ "   -fx-font-family: \"" + Charcode.xarFont[f].getName() +  "\";\r\n"
 				+ "}");*/
@@ -117,7 +135,7 @@ public class TableView extends AnchorPane{
 	//int rollDown = 10;
 	final Slider PageSlider = new Slider(Charcode.CHARMIN,Charcode.CHARMIT,Charcode.CHARMIN); 
 	
-	Button DownBTN,UpBTN,JumpToBtn,SearchBtn,RefreshBtn;
+	Button DownBTN,UpBTN,JumpToBtn,SearchBtn,RefreshBtn,ViewSizeBTN;
 	TextField JumpToTf, RollDownTf, InTf;
 	ChoiceBox<String> FontSelCb;
 	Text      XL;
@@ -133,11 +151,11 @@ public class TableView extends AnchorPane{
 	    
 	}
 	void init() {
-		double layoutx = TableView.colMax*Tiles.getTileWidth()*Tiles.getSpanRatio()+50;
+		double layoutx = colMax*Tiles.getTileWidth()*Tiles.getSpanRatio()+50;
 		double layouty = Tiles.getTileHeight()/2;
 		
 		
-		labelFontSel = new Label("Font Select     @unicodepicker-jre1.8-v0.0.1");
+		labelFontSel = new Label("Font Select     @unicodepicker-"+Main.ABOUT+"-v0.0.3");
 		labelFontSel.setLayoutX(layoutx);
 		labelFontSel.setLayoutY(layouty/2);
 		
@@ -210,7 +228,7 @@ public class TableView extends AnchorPane{
 					}
 				}
 				if (parseInt != -1) {
-					int index = parseInt % TableView.colMax;
+					int index = parseInt % colMax;
 					pageTo(parseInt);
 					focusTo(chars[index]);
 				}
@@ -248,6 +266,29 @@ public class TableView extends AnchorPane{
 			}
 			
 		});
+		
+		ViewSizeBTN= new Button("⤡");
+		ViewSizeBTN.setLayoutX(layoutx+Tiles.RECTWIDTH*4);
+		ViewSizeBTN.setLayoutY(layouty+controllerspan*5);
+		ViewSizeBTN.setOnAction(new EventHandler(){
+			@Override
+			public void handle(Event args) {
+				
+				if (LAYOUT_SIZE >= 0.5) {
+					LAYOUT_SIZE /= 2;
+				}
+				else {
+					LAYOUT_SIZE = 2;
+				}
+				createScene();
+				stage.setScene(scene);
+				redraw();
+			}
+			
+		});
+		
+		
+		
 		labelInput = new Label("Enable to input what you click");
 		labelInput.setLayoutX(layoutx);
 		labelInput.setLayoutY(layouty+controllerspan * 6.5);
@@ -265,9 +306,9 @@ public class TableView extends AnchorPane{
 		INChb.setLayoutY(layouty+controllerspan*6.5);
 		
 		XL = new Text("");
-		XL.setScaleX(2* LAYOUT_SIZE);
-		XL.setScaleY(2* LAYOUT_SIZE);
-		XL.setFont(Charcode.bigFont[0]);
+		XL.setScaleX(2* ((LAYOUT_SIZE>1)?1:LAYOUT_SIZE));
+		XL.setScaleY(2* ((LAYOUT_SIZE>1)?1:LAYOUT_SIZE));
+		XL.setFont(Charcode.bigFonts[0]);
 	    Image XLM = XL.snapshot(null, null);
 	    
 	    xarView1 = new ImageView(XLM);
@@ -276,16 +317,16 @@ public class TableView extends AnchorPane{
 	    xarView1.setLayoutX(layoutx - Tiles.RECTWIDTH*0.5);
 	    xarView1.setLayoutY(layouty+controllerspan*8 );
 	    
-	    double table_height = Tiles.RECTHEIGHT * TableView.rowMax * Tiles.SPANRATIO;
-	    double table_width = Tiles.RECTWIDTH * TableView.colMax * Tiles.SPANRATIO;
+	    double table_height = Tiles.RECTHEIGHT * rowMax * Tiles.SPANRATIO;
+	    double table_width = Tiles.RECTWIDTH * colMax * Tiles.SPANRATIO;
 	    
 	    
 	    
 	    xarView2 = new ImageView(XLM);
-	    xarView2.setScaleX(5 * LAYOUT_SIZE );
-	    xarView2.setScaleY(5 * LAYOUT_SIZE );
+	    xarView2.setScaleX(5 * ((LAYOUT_SIZE>1)?1:LAYOUT_SIZE) );
+	    xarView2.setScaleY(5 * ((LAYOUT_SIZE>1)?1:LAYOUT_SIZE) );
 	    xarView2.setLayoutX(layoutx+Tiles.RECTWIDTH*2.6);
-	    xarView2.setLayoutY(table_height - Tiles.RECTHEIGHT * 4 * LAYOUT_SIZE);// set smaller with small screen
+	    xarView2.setLayoutY(table_height - Tiles.RECTHEIGHT * 4 * ((LAYOUT_SIZE>1)?1:LAYOUT_SIZE));// set smaller with small screen
 	    
 	    
 	    
@@ -304,14 +345,14 @@ public class TableView extends AnchorPane{
 			}
         });
 	    
-		this.getChildren().addAll(FontSelCb,JumpToTf,JumpToBtn,
-				RollDownTf,UpBTN,DownBTN,InTf,
+		table.getChildren().addAll(FontSelCb,JumpToTf,JumpToBtn,
+				RollDownTf,UpBTN,DownBTN,ViewSizeBTN,InTf,
 				INChb,
 				xarView1,xarView2,
 				PageSlider,
 				labelFontSel,labelScroll,labelSearch,labelInput);
 		
-		this.setOnScroll(new EventHandler<ScrollEvent>() {
+		table.setOnScroll(new EventHandler<ScrollEvent>() {
 		      @Override
 		      public void handle(ScrollEvent event) {
 		    	  scroll(event.getDeltaY()>0);

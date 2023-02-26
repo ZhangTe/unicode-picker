@@ -24,8 +24,8 @@ public class Charcode extends Tiles {
 	/*public static String []FONTS_prefer  = {
 			"Arial"
 			};*/
-	public static Font[] xarFont;
-	public static Font[] bigFont;
+	public static Font[] xarFonts;
+	public static Font[] bigFonts;
 	static final String  CHARSETN       = "UTF-16";
 	static final Charset CHARSET        = Charset.forName(CHARSETN);
     static final Charset DEFAULTCHARSET = Charset.defaultCharset();
@@ -38,20 +38,35 @@ public class Charcode extends Tiles {
     
     public static int FONT_CHOOSED      = 0;
     //public static java.awt.Font[] FCheck;
-   
+    
+    // The following fonts may cause runtime exception, so it should be removed.
+    static final String [] UNUSEDFONTS = {"HanaMinA Regular"};
     
     static {
     	//FCheck = new java.awt.Font[FONTS_prefer.length];
-    	xarFont = new Font[FONTS.length/*+FONTS_prefer.length+1*/];
-    	bigFont = new Font[FONTS.length/*+FONTS_prefer.length+1*/];
+    	
+    	
+    	
+    	xarFonts = new Font[FONTS.length/*+FONTS_prefer.length*/+1];
+    	bigFonts = new Font[FONTS.length/*+FONTS_prefer.length*/+1];
     	for(int i = 0; i < FONTS.length; i ++) {
     		//FCheck[i] = new java.awt.Font(FONTS[i].getFontName(), 0,(int)FONTSIZE);
-    		
     		// Because javafx cannot read the non-English font name
     		// The font name that read from awt should be changed into English
-    		
-    		xarFont[i] = new Font(FONTS[i].getFamily(Locale.ENGLISH), FONTSIZE);
-			bigFont[i] = new Font(FONTS[i].getFamily(Locale.ENGLISH), BIGSIZE);
+    		String fontname = FONTS[i].getFontName(Locale.ENGLISH);
+    		/**
+    		 * Clear bad fonts that may cause Runtime exception
+    		 */
+    		for(int k = 0; k < UNUSEDFONTS.length; k ++) {
+    			if (fontname.equalsIgnoreCase(UNUSEDFONTS[k])) {
+    				fontname = "DONT_USE";
+    				FONTS[i] = new java.awt.Font(fontname , 0, 0);
+    				
+    				break;
+    			}
+    		}
+    		xarFonts[i] = new Font(fontname, FONTSIZE);
+			bigFonts[i] = new Font(fontname, BIGSIZE);
 			//FONTS[i].ge
 		}
     	/*for(int i = 0; i < FONTS_prefer.length; i ++) {
@@ -59,8 +74,21 @@ public class Charcode extends Tiles {
     		xarFont[FONTS.length+i] = new Font(FONTS_prefer[i], FONTSIZE);
 			bigFont[FONTS.length+i] = new Font(FONTS_prefer[i], BIGSIZE);
 		}*/
-    	xarFont[xarFont.length-1] = new Font("default", FONTSIZE);
-    	bigFont[bigFont.length-1] = new Font("default", BIGSIZE);
+    	xarFonts[xarFonts.length-1] = new Font("default", FONTSIZE);
+    	bigFonts[bigFonts.length-1] = new Font("default", BIGSIZE);
+    	//for(int i = 0; i < FONTS.length+1; i ++) {
+    		//FCheck[i] = new java.awt.Font(FONTS[i].getFontName(), 0,(int)FONTSIZE);
+    		
+    		// Because javafx cannot read the non-English font name
+    		// The font name that read from awt should be changed into English
+    		
+			//FONTS[i].ge
+		//}
+    	for(int i = 0; i < FONTS.length; i ++) {
+    		System.out.println(i + " :" +FONTS[i]+"  en:"+FONTS[i].getFontName(Locale.ENGLISH)
+    				+" fx: family:" + xarFonts[i].getFamily() +" ; Name:" + xarFonts[i].getName());
+		}
+    	
     }
     
     
@@ -82,8 +110,12 @@ public class Charcode extends Tiles {
 		XarL.setText(X);
 		Code = code;
 		this.setWhite();
+		if ( Code % 0x100 <= 0x7F ) {
+			if (Code % 0x1000 <= 0x7F)
+				this.setCyon();
+			else this.setGrey();
+		}
 		setFont(FONT_CHOOSED);
-		
 	}
 	
 	void autochooseFont() {
@@ -106,6 +138,9 @@ public class Charcode extends Tiles {
 			 * check if the other font can display the character
 			 */
 		for(i = 0; i < FONTS.length;  i ++) {
+			if(xarFonts[i].getFamily().equalsIgnoreCase("System")) {
+				continue;
+			}
 			if(FONTS[i].canDisplayUpTo(X) == -1 )
 				break;
 		}
@@ -115,7 +150,7 @@ public class Charcode extends Tiles {
 			//XarL.setFont(xarFont[i]);
 		}
 		else {
-			fontidx = xarFont.length-1;
+			fontidx = xarFonts.length-1;
 			//XarL.setFont(xarFont[fontidx]);
 			if(!Character.isDefined(Code)) this.setPink();
 		}
@@ -134,9 +169,9 @@ public class Charcode extends Tiles {
 			autochooseFont();
 		}
 			
-		String name_ = xarFont[fontidx].getName();
+		String name_ = xarFonts[fontidx].getFamily();
 		CodeL.setText(getHexCode() + "\n" + name_.substring(0,(name_.length()>6)?6:name_.length()));
-		XarL.setFont(xarFont[fontidx]);
+		XarL.setFont(xarFonts[fontidx]);
 	}
 	
 	

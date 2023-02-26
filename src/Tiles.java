@@ -5,8 +5,8 @@ public class Tiles extends AnchorPane{
 	static final double STROKEWITH = 2;
 	static final Color  FILLCOLOR  = Color.rgb(240,240,240);;
 	static final Color  FOCUSCOLOR = Color.ORANGE;
-	static double RECTWIDTH = 45;
-	static double RECTHEIGHT= 60;
+	static double RECTWIDTH = 45;//45
+	static double RECTHEIGHT= 60;//60
 	static double SPANRATIO = 1.05;
 	Rectangle rctg = new Rectangle(RECTWIDTH,RECTHEIGHT);
 	public Tiles(){
@@ -23,6 +23,12 @@ public class Tiles extends AnchorPane{
 	}
 	public void setWhite() {
 		rctg.setFill(Color.rgb(240, 240, 240));
+	}
+	public void setGrey() {
+		rctg.setFill(Color.rgb(220, 220, 220));
+	}
+	public void setCyon() {
+		rctg.setFill(Color.rgb(220, 220, 240));
 	}
 	public void setX(int x){
 		this.xPos = x;
