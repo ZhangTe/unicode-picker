@@ -33,7 +33,7 @@ public class Charcode extends Tiles {
     static final int CHARMIT            = 0x323AF; // update 2022-09 unicode char table version 15
     static final int CHARMIN            = 0x0;
     public static double FONTSIZE       = 34;
-    public static double BIGSIZE        = 80;
+    public static double BIGSIZE        = 90;
                      int fontidx        = 0;
     
     public static int FONT_CHOOSED      = 0;
@@ -155,5 +155,7 @@ public class Charcode extends Tiles {
 	public String getHexCode() {
 		return Integer.toHexString(Code);
 	}
-	
+	public int getCode() {
+		return Code;
+	}
 }

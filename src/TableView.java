@@ -1,13 +1,12 @@
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -15,12 +14,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class TableView extends AnchorPane{
-	public static int colMax = 0x20;
-	public static int rowMax = 0x10;
+	/**
+	 * Layout size setting to 1 as 1080p screen.
+	 * set to 0.5 for 540p
+	 */
+	public static final double LAYOUT_SIZE = 1;
+	public static int colMax = (int) (32*LAYOUT_SIZE);
+	public static int rowMax = (int) (16*LAYOUT_SIZE);
+	public static double controllerspan = 30;
 	int startAt= 0x0;
 	Charcode [] chars;
 	AnchorPane table;
@@ -49,9 +53,16 @@ public class TableView extends AnchorPane{
 			if(INChb.isSelected())
 				InTf.setText(InTf.getText() + s);
 			XL.setText(s);
+			
 			XL.setFont(Charcode.bigFont[cc.getFontIndex()]);
 		    Image XLM = XL.snapshot(null, null);
+		    
+		    //cc_.setTile(cc.getCode());
+		    //cc_.setScaleX(6);
+		    //cc_.setScaleY(6);
+		    //table.getChildren().add(cc_);
 		    Image XLM2= cc.snapshot(null, null);
+		    
 		    /*
 		    //for debug
 		    int canplay = Charcode.FONTS[Charcode.FONT_CHOOSED].canDisplayUpTo(s);
@@ -101,7 +112,7 @@ public class TableView extends AnchorPane{
 	Text      XL;
 	ImageView xarView1, xarView2;
 	CheckBox  INChb;
-	
+	Label labelFontSel,labelScroll,labelSearch,labelInput;
 	public static void printbin (int num){
 		System.out.println(num + "binary:");
 	    for(int i=31;i>=0;i--){
@@ -111,12 +122,19 @@ public class TableView extends AnchorPane{
 	    
 	}
 	void init() {
+		double layoutx = TableView.colMax*Tiles.getTileWidth()*Tiles.getSpanRatio()+50;
+		double layouty = Tiles.getTileHeight()/2;
+		
+		
+		labelFontSel = new Label("Font Select");
+		labelFontSel.setLayoutX(layoutx);
+		labelFontSel.setLayoutY(layouty/2);
+		
 		FontSelCb = new ChoiceBox<String>();
 		for (int i = 0 ; i < Charcode.FONTS.length; i ++)
 			FontSelCb.getItems().add(Charcode.FONTS[i].getFontName());
-		double layoutx = TableView.colMax*Tiles.getTileWidth()*Tiles.getSpanRatio()+50;
-		double layouty = Tiles.getTileHeight();
-		double controllerspan = 30;
+		
+		
 		FontSelCb.setLayoutX(layoutx);
 		FontSelCb.setLayoutY(layouty);
 		 // add a listener 
@@ -129,6 +147,12 @@ public class TableView extends AnchorPane{
             	changeFont(new_value.intValue());
             } 
         }); 
+		
+		
+		labelSearch = new Label("Search, character or hex-number");
+		labelSearch.setLayoutX(layoutx);
+		labelSearch.setLayoutY(layouty+controllerspan * 0.8);
+		
 		
 		JumpToTf = new TextField("");
 		JumpToBtn = new Button("JumpTo");
@@ -184,6 +208,10 @@ public class TableView extends AnchorPane{
 		});
 		
 		
+		labelScroll = new Label("Scroll\nlines");
+		labelScroll.setLayoutX(layoutx-Tiles.RECTWIDTH*0.8);
+		labelScroll.setLayoutY(layouty+controllerspan * 3);
+		
 		RollDownTf = new TextField("4");
 		RollDownTf.setLayoutX(layoutx);
 		RollDownTf.setLayoutY(layouty+controllerspan*3);
@@ -209,10 +237,13 @@ public class TableView extends AnchorPane{
 			}
 			
 		});
+		labelInput = new Label("Enable to input what you click");
+		labelInput.setLayoutX(layoutx);
+		labelInput.setLayoutY(layouty+controllerspan * 6.5);
 		
 		InTf = new TextField("");
 		InTf.setLayoutX(layoutx);
-		InTf.setLayoutY(layouty+controllerspan*6);
+		InTf.setLayoutY(layouty+controllerspan*7);
 		/*InTf.setStyle(".text-field{\r\n"
 				+ "   -fx-font: \"" + Charcode.xarFont[1].getName() +  "\";\r\n"
 				+ "}");*/
@@ -220,28 +251,39 @@ public class TableView extends AnchorPane{
 		INChb = new CheckBox("In?");
 		INChb.textFillProperty().setValue(Color.WHITE);
 		INChb.setLayoutX(layoutx - controllerspan);
-		INChb.setLayoutY(layouty+controllerspan*6);
+		INChb.setLayoutY(layouty+controllerspan*6.5);
 		
 		XL = new Text("");
+		XL.setScaleX(2* LAYOUT_SIZE);
+		XL.setScaleY(2* LAYOUT_SIZE);
 		XL.setFont(Charcode.bigFont[0]);
 	    Image XLM = XL.snapshot(null, null);
 	    
 	    xarView1 = new ImageView(XLM);
-	    xarView1.setLayoutX(layoutx+Tiles.RECTWIDTH*1);
-	    xarView1.setLayoutY(layouty+controllerspan*10); // set smaller with small screen
-	    xarView1.setScaleX(2.3);
-	    xarView1.setScaleY(2.3);
-		
+	    //xarView1.setScaleX(2.3* LAYOUT_SIZE );
+	    //xarView1.setScaleY(2.3* LAYOUT_SIZE );
+	    xarView1.setLayoutX(layoutx);
+	    xarView1.setLayoutY(layouty+controllerspan*8 );
+	    
+	    double table_height = Tiles.RECTHEIGHT * TableView.rowMax * Tiles.SPANRATIO;
+	    double table_width = Tiles.RECTWIDTH * TableView.colMax * Tiles.SPANRATIO;
+	    
+	    
+	    
 	    xarView2 = new ImageView(XLM);
-	    xarView2.setLayoutX(layoutx+Tiles.RECTWIDTH*2);
-	    xarView2.setLayoutY(layouty+controllerspan*22);// set smaller with small screen
-	    xarView2.setScaleX(5);
-	    xarView2.setScaleY(5);
+	    xarView2.setScaleX(5 * LAYOUT_SIZE );
+	    xarView2.setScaleY(5 * LAYOUT_SIZE );
+	    xarView2.setLayoutX(layoutx+Tiles.RECTWIDTH*2.6);
+	    xarView2.setLayoutY(table_height - Tiles.RECTHEIGHT * 4 * LAYOUT_SIZE);// set smaller with small screen
+	    
+	    
+	    
 	    
 	    PageSlider.setRotate(90);
-	    PageSlider.setLayoutX(layoutx-Tiles.RECTWIDTH*11);
-	    PageSlider.setLayoutY(layouty+controllerspan*15);
-	    PageSlider.setPrefWidth(Tiles.RECTWIDTH*20);
+	    PageSlider.setLayoutX(table_width - table_height/2);
+	    PageSlider.setLayoutY(table_height / 2);
+	    //PageSlider.setW
+	    PageSlider.setPrefWidth(table_height);
 	    
 	    PageSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
@@ -255,7 +297,8 @@ public class TableView extends AnchorPane{
 				RollDownTf,UpBTN,DownBTN,InTf,
 				INChb,
 				xarView1,xarView2,
-				PageSlider);
+				PageSlider,
+				labelFontSel,labelScroll,labelSearch,labelInput);
 		
 		this.setOnScroll(new EventHandler<ScrollEvent>() {
 		      @Override
@@ -265,6 +308,21 @@ public class TableView extends AnchorPane{
 		      }
 		    });
 	}
+	
+	/**
+	 * for this program only.
+	 * control panel should be at the right of the form
+	 * with fixed x-position.
+	 * @param n
+	 * @param id
+	 * @param height
+	 */
+	/*void addController(Node n, int layoutx, int controller_id) {
+		n.setLayoutX(layoutx);
+		n.setLayoutY(controller_id*controllerspan);
+		//this.getChildren()
+	}*/
+	
 	
 	void scroll(boolean up) {
 		try {
