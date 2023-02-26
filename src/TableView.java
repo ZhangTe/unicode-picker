@@ -135,7 +135,7 @@ public class TableView{
 	//int rollDown = 10;
 	final Slider PageSlider = new Slider(Charcode.CHARMIN,Charcode.CHARMIT,Charcode.CHARMIN); 
 	
-	Button DownBTN,UpBTN,JumpToBtn,SearchBtn,RefreshBtn,ViewSizeBTN;
+	Button DownBTN,UpBTN,JumpToBtn,SearchBtn,RefreshBtn,ViewSizeLargerBTN,ViewSizeSmallerBTN;
 	TextField JumpToTf, RollDownTf, InTf;
 	ChoiceBox<String> FontSelCb;
 	Text      XL;
@@ -267,13 +267,12 @@ public class TableView{
 			
 		});
 		
-		ViewSizeBTN= new Button("⤡");
-		ViewSizeBTN.setLayoutX(layoutx+Tiles.RECTWIDTH*4);
-		ViewSizeBTN.setLayoutY(layouty+controllerspan*5);
-		ViewSizeBTN.setOnAction(new EventHandler(){
+		ViewSizeLargerBTN= new Button("⤡");
+		ViewSizeLargerBTN.setLayoutX(layoutx+Tiles.RECTWIDTH*4);
+		ViewSizeLargerBTN.setLayoutY(layouty+controllerspan*5);
+		ViewSizeLargerBTN.setOnAction(new EventHandler(){
 			@Override
 			public void handle(Event args) {
-				
 				if (LAYOUT_SIZE >= 0.5) {
 					LAYOUT_SIZE /= 2;
 				}
@@ -286,8 +285,42 @@ public class TableView{
 			}
 			
 		});
-		
-		
+		ViewSizeLargerBTN= new Button("⬊");
+		ViewSizeLargerBTN.setLayoutX(layoutx+Tiles.RECTWIDTH*4.5);
+		ViewSizeLargerBTN.setLayoutY(layouty+controllerspan*5);
+		ViewSizeLargerBTN.setOnAction(new EventHandler(){
+			@Override
+			public void handle(Event args) {
+				if (LAYOUT_SIZE < 2) {
+					LAYOUT_SIZE *= 2;
+				}
+				else {
+					LAYOUT_SIZE = 0.25;
+				}
+				createScene();
+				stage.setScene(scene);
+				redraw();
+			}
+			
+		});
+		ViewSizeSmallerBTN= new Button("⬉");
+		ViewSizeSmallerBTN.setLayoutX(layoutx+Tiles.RECTWIDTH*4);
+		ViewSizeSmallerBTN.setLayoutY(layouty+controllerspan*5);
+		ViewSizeSmallerBTN.setOnAction(new EventHandler(){
+			@Override
+			public void handle(Event args) {
+				if (LAYOUT_SIZE > 0.25) {
+					LAYOUT_SIZE /= 2;
+				}
+				else {
+					LAYOUT_SIZE = 2;
+				}
+				createScene();
+				stage.setScene(scene);
+				redraw();
+			}
+			
+		});
 		
 		labelInput = new Label("Enable to input what you click");
 		labelInput.setLayoutX(layoutx);
@@ -346,7 +379,7 @@ public class TableView{
         });
 	    
 		table.getChildren().addAll(FontSelCb,JumpToTf,JumpToBtn,
-				RollDownTf,UpBTN,DownBTN,ViewSizeBTN,InTf,
+				RollDownTf,UpBTN,DownBTN,ViewSizeLargerBTN,ViewSizeSmallerBTN,InTf,
 				INChb,
 				xarView1,xarView2,
 				PageSlider,
