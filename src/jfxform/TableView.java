@@ -1,3 +1,4 @@
+package jfxform;
 import java.util.Locale;
 
 import javafx.beans.value.ChangeListener;
@@ -89,12 +90,14 @@ public class TableView{
 		    
 		    //for debug
 		    int canplay = Charcode.FONTS[Charcode.FONT_CHOOSED].canDisplayUpTo(s);
-		    if (cc.fontidx < Charcode.FONTS.length)
-		    System.out.println(s + " font :" +cc.fontidx + ": " + Charcode.FONTS[cc.fontidx] 
-		    		+ "; choosed font"+Charcode.FONT_CHOOSED + " " + Charcode.FONTS[Charcode.FONT_CHOOSED] 
-		    		+ "(en=" +  Charcode.FONTS[Charcode.FONT_CHOOSED].getFamily(Locale.ENGLISH) +") can play " + canplay);
-		    else System.out.println("cannot display");
-		    //----
+		    if (cc.fontidx < Charcode.FONTS.length) {
+			    System.out.println(s + " font :" +cc.fontidx + ": " + Charcode.FONTS[cc.fontidx] 
+			    		+ "; choosed font"+Charcode.FONT_CHOOSED + " " + Charcode.FONTS[Charcode.FONT_CHOOSED] 
+			    		+ "(en=" +  Charcode.FONTS[Charcode.FONT_CHOOSED].getFamily(Locale.ENGLISH) +") can play " + canplay);
+			    System.out.println(cc.fontidx + " :" +Charcode.FONTS[cc.fontidx]+"  en:"+Charcode.FONTS[cc.fontidx].getFontName(Locale.ENGLISH)
+	    				+" fx: family:" + Charcode.xarFonts[cc.fontidx].getFamily() +" ; Name:" + Charcode.xarFonts[cc.fontidx].getName());
+			    //----
+		    }
 		    xarView1.setImage(XLM);
 		    xarView2.setImage(XLM2);
 		    
@@ -125,7 +128,7 @@ public class TableView{
 				+ "   -fx-font-family: \"" + Charcode.xarFont[f].getName() +  "\";\r\n"
 				+ "}");*/
 		for (int i = 0; i < chars.length; i ++ ) {
-			chars[i].setFont(f);
+			chars[i].setDisplayFont(f);
 		}
 		Charcode.FONT_CHOOSED = f;
 		//Charcode.FONTS_prefer[0]=Charcode.FONTS[f].getFontName();
@@ -161,7 +164,10 @@ public class TableView{
 		
 		FontSelCb = new ChoiceBox<String>();
 		for (int i = 0 ; i < Charcode.FONTS.length; i ++)
-			FontSelCb.getItems().add(Charcode.FONTS[i].getFontName());
+			FontSelCb.getItems().add(Charcode.FONTS[i].getFamily()+" "
+					+ Charcode.FONTS[i].getFamily(Locale.ENGLISH)+" "
+					+Charcode.FONTS[i].getFontName() + " " 
+					+Charcode.FONTS[i].getName());
 		
 		
 		FontSelCb.setLayoutX(layoutx);
@@ -172,8 +178,11 @@ public class TableView{
             // if the item of the list is changed 
             public void changed(ObservableValue ov, Number value, Number new_value) 
             { 
-            	System.out.println(new_value.toString() + ":" + Charcode.FONTS[new_value.intValue()]);
-            	changeFont(new_value.intValue());
+            	int fonid = new_value.intValue();
+            	System.out.println(new_value.toString() + ":" + Charcode.FONTS[fonid] + " awt fontName en:" +  Charcode.FONTS[fonid].getFontName(Locale.ENGLISH)
+            			+ " fontname nonlocal:" +  Charcode.FONTS[fonid].getFontName() + " font-name:" +  Charcode.FONTS[fonid].getName());
+            	System.out.println("fx: family:" + Charcode.xarFonts[fonid].getFamily() +" ; Name:" + Charcode.xarFonts[fonid].getName());
+            	changeFont(fonid);
             } 
         }); 
 		

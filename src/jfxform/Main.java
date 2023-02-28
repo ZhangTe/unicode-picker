@@ -1,3 +1,4 @@
+package jfxform;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -7,7 +8,9 @@ public class Main extends Application{
 	
 	public static void main(String []args) {
 		launch(args);
-		  
+		//java.awt.Font f = new java.awt.Font("Segoe UI", 1, 1);
+		//javafx.scene.text.Font f = new javafx.scene.text.Font(userAgentStylesheet, 0);
+		//System.out.print(f.toString());		//*/
 	}
 	
 	@Override

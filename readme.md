@@ -5,32 +5,45 @@ This is a unicode character viewer & picker in java.
 A alternative way to search in character map.
 ![sample1](/screenshot/sampleform1.png)
 # Installation
-
+Download the released `jar file` that fit for your screen and environment.
 ## Java Environment
 Java is available in many different system platforms, including Windows, Linux, MacOs etc.<br/>
-Install Oracle java runtime 1.7 or 1.8 ( Java 8 is 1.8 )(skip if you already have a Java Runtime Environment)
->[HuaweiCloud Java8 SDK](https://mirrors.huaweicloud.com/java/jdk/8u202-b08/)
+Install Oracle java runtime 1.7 or later(skip if you already have a Java Runtime Environment)
+The program require javafx as ui-engine, javafx is not directly come with jdk after java 11.
 
-## Download release
+### JRE 7 - 10
+Download and Install jdk.<br/>
+Run
 
-Download the released `jar file` that fit for your screen and environment.
+```bash
+java -jar {jar file path}\codechart.jar 
+```
 
+### JAVA 11 以上
 
+Download and setup JRE(OpenJDK),
+then Download and unzip JAVAFX module.<br/>
 
-## In Linux
+Setup the java path and run:
 
-Open `linux_unicodepicker_start.sh` with text editor;<br/>
-set 2 paths with `{}`;<br/>
-`chmod u+x linux_unicodepicker_start.sh`, grant execution permission;
-`./linux_unicodepicker_start.sh`, to launch.
+```bash
+java -jar --module-path "{javafx module path}\lib" --add-modules javafx.controls,javafx.fxml {jar file path}\codechart.jar 
+```
+
+>Downloads:
+>[JAVAFX SDK](https://gluonhq.com/products/javafx/)
+>[华为云 JDK](https://mirrors.huaweicloud.com/java/jdk/)
+>[OpenJDK 19](https://jdk.java.net/19/)
+
+***
 
 # Fonts
 
-Some characters require additional fonts to be displayed.
+Some characters require additional fonts to be displayed.<br/>
 
 This font may meet the needs:<br/>
 > [TH-Tshyn](http://cheonhyeong.com/English/download.html)
-
+>[TH-Tshyn Font full(Chinese)](http://cheonhyeong.com/Simplified/download.html)
 Notice: Fonts should always be installed for **all-user** then can be loaded by this program.
 
 # Unicode Relative Links

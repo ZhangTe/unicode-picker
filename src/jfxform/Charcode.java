@@ -1,3 +1,4 @@
+package jfxform;
 
 import java.awt.GraphicsEnvironment;
 import java.nio.charset.Charset;
@@ -41,6 +42,8 @@ public class Charcode extends Tiles {
     
     // The following fonts may cause runtime exception, so it should be removed.
     static final String [] UNUSEDFONTS = {"HanaMinA Regular"};
+    static final String [] PREFERRED = {"TH-Tshyn-P0","TH-Tshyn-P1","TH-Tshyn-P2","TH-Tshyn-P16"};
+    
     
     static {
     	//FCheck = new java.awt.Font[FONTS_prefer.length];
@@ -54,11 +57,14 @@ public class Charcode extends Tiles {
     		// Because javafx cannot read the non-English font name
     		// The font name that read from awt should be changed into English
     		String fontname = FONTS[i].getFontName(Locale.ENGLISH);
+    		if (fontname.equalsIgnoreCase("Dialog")) {
+    			fontname = FONTS[i].getName();
+    		}
     		/**
     		 * Clear bad fonts that may cause Runtime exception
     		 */
     		for(int k = 0; k < UNUSEDFONTS.length; k ++) {
-    			if (fontname.equalsIgnoreCase(UNUSEDFONTS[k])) {
+    			if (fontname.contains(UNUSEDFONTS[k])) {
     				fontname = "DONT_USE";
     				FONTS[i] = new java.awt.Font(fontname , 0, 0);
     				
@@ -115,7 +121,7 @@ public class Charcode extends Tiles {
 				this.setCyon();
 			else this.setGrey();
 		}
-		setFont(FONT_CHOOSED);
+		setDisplayFont(FONT_CHOOSED);
 	}
 	
 	void autochooseFont() {
@@ -163,9 +169,9 @@ public class Charcode extends Tiles {
 		return fontidx;
 	}
 	
-	public void setFont(int x) {
+	public void setDisplayFont(int x) {
 		fontidx=x;
-		if(FONTS[x].canDisplayUpTo(X) != -1 ) {
+		if(FONTS[x].canDisplayUpTo(X) != -1 || xarFonts[x].getFamily().equals("System")) {
 			autochooseFont();
 		}
 			
