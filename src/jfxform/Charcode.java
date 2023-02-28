@@ -35,20 +35,22 @@ public class Charcode extends Tiles {
     static final int CHARMIN            = 0x0;
     public static double FONTSIZE       = 34;
     public static double BIGSIZE        = 90;
-                     int fontidx        = 0;
+    private          int fontidx        = 0;
     
     public static int FONT_CHOOSED      = 0;
     //public static java.awt.Font[] FCheck;
     
     // The following fonts may cause runtime exception, so it should be removed.
     static final String [] UNUSEDFONTS = {"HanaMinA Regular"};
-    static final String [] PREFERRED = {"TH-Tshyn-P0","TH-Tshyn-P1","TH-Tshyn-P2","TH-Tshyn-P16"};
+    static final String [] RECOMMENDFONTS = {"TH-Tshyn-P0","TH-Tshyn-P1","TH-Tshyn-P2","TH-Tshyn-P16"};
     
     
     static {
     	//FCheck = new java.awt.Font[FONTS_prefer.length];
-    	
-    	
+    	int []recommand_idx = new int [RECOMMENDFONTS.length];
+    	for(int i = 0 ; i<recommand_idx.length; i ++) {
+    		recommand_idx[i]=-1;
+    	}
     	
     	xarFonts = new Font[FONTS.length/*+FONTS_prefer.length*/+1];
     	bigFonts = new Font[FONTS.length/*+FONTS_prefer.length*/+1];
@@ -57,9 +59,6 @@ public class Charcode extends Tiles {
     		// Because javafx cannot read the non-English font name
     		// The font name that read from awt should be changed into English
     		String fontname = FONTS[i].getFontName(Locale.ENGLISH);
-    		if (fontname.equalsIgnoreCase("Dialog")) {
-    			fontname = FONTS[i].getName();
-    		}
     		/**
     		 * Clear bad fonts that may cause Runtime exception
     		 */
@@ -71,25 +70,38 @@ public class Charcode extends Tiles {
     				break;
     			}
     		}
+    		for(int k = 0; k < RECOMMENDFONTS.length; k ++) {
+    			if (recommand_idx[k]==-1 && fontname.contains(RECOMMENDFONTS[k] )) {
+    				recommand_idx[k]=i;
+    				break;
+    			}
+    		}
     		xarFonts[i] = new Font(fontname, FONTSIZE);
 			bigFonts[i] = new Font(fontname, BIGSIZE);
 			//FONTS[i].ge
+			
+			
 		}
-    	/*for(int i = 0; i < FONTS_prefer.length; i ++) {
-    		//FCheck[i] = new java.awt.Font(FONTS_prefer[i], 0,(int)FONTSIZE);
-    		xarFont[FONTS.length+i] = new Font(FONTS_prefer[i], FONTSIZE);
-			bigFont[FONTS.length+i] = new Font(FONTS_prefer[i], BIGSIZE);
-		}*/
+   
     	xarFonts[xarFonts.length-1] = new Font("default", FONTSIZE);
     	bigFonts[bigFonts.length-1] = new Font("default", BIGSIZE);
-    	//for(int i = 0; i < FONTS.length+1; i ++) {
-    		//FCheck[i] = new java.awt.Font(FONTS[i].getFontName(), 0,(int)FONTSIZE);
-    		
-    		// Because javafx cannot read the non-English font name
-    		// The font name that read from awt should be changed into English
-    		
-			//FONTS[i].ge
-		//}
+    	// swap Recommend Font to front 
+    	for(int i = 0, j = 0 ; j < RECOMMENDFONTS.length; j++) {
+			if (recommand_idx[j]>=0) {
+	    		java.awt.Font awtfonttmp = FONTS[i];
+	    		FONTS[i]=FONTS[recommand_idx[j]];
+	    		FONTS[recommand_idx[j]] = awtfonttmp;
+	    		
+	    		Font xarfonttmp=xarFonts[i], bigfonttmp=bigFonts[i];
+	    		xarFonts[i]=xarFonts[recommand_idx[j]];
+	    		
+	    		xarFonts[recommand_idx[j]]=xarfonttmp;
+	    		
+	    		bigFonts[i]=bigFonts[recommand_idx[j]];
+	    		bigFonts[recommand_idx[j]]=bigfonttmp;
+	    		i++;
+			}
+		}
     	for(int i = 0; i < FONTS.length; i ++) {
     		System.out.println(i + " :" +FONTS[i]+"  en:"+FONTS[i].getFontName(Locale.ENGLISH)
     				+" fx: family:" + xarFonts[i].getFamily() +" ; Name:" + xarFonts[i].getName());
@@ -125,7 +137,7 @@ public class Charcode extends Tiles {
 	}
 	
 	void autochooseFont() {
-		int i = 0;
+		
 		/**
 		 * check if the preferred font can display the character
 		 */
@@ -143,6 +155,8 @@ public class Charcode extends Tiles {
 			/**
 			 * check if the other font can display the character
 			 */
+		
+		int i = 0;
 		for(i = 0; i < FONTS.length;  i ++) {
 			if(xarFonts[i].getFamily().equalsIgnoreCase("System")) {
 				continue;

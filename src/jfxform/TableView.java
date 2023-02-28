@@ -90,12 +90,14 @@ public class TableView{
 		    
 		    //for debug
 		    int canplay = Charcode.FONTS[Charcode.FONT_CHOOSED].canDisplayUpTo(s);
-		    if (cc.fontidx < Charcode.FONTS.length) {
-			    System.out.println(s + " font :" +cc.fontidx + ": " + Charcode.FONTS[cc.fontidx] 
+		    if (cc.getFontIndex() < Charcode.FONTS.length) {
+			    System.out.println(s + " font :" +cc.getFontIndex() + ": " + Charcode.FONTS[cc.getFontIndex()] 
 			    		+ "; choosed font"+Charcode.FONT_CHOOSED + " " + Charcode.FONTS[Charcode.FONT_CHOOSED] 
 			    		+ "(en=" +  Charcode.FONTS[Charcode.FONT_CHOOSED].getFamily(Locale.ENGLISH) +") can play " + canplay);
-			    System.out.println(cc.fontidx + " :" +Charcode.FONTS[cc.fontidx]+"  en:"+Charcode.FONTS[cc.fontidx].getFontName(Locale.ENGLISH)
-	    				+" fx: family:" + Charcode.xarFonts[cc.fontidx].getFamily() +" ; Name:" + Charcode.xarFonts[cc.fontidx].getName());
+			    System.out.println(cc.getFontIndex() + " :" +Charcode.FONTS[cc.getFontIndex()]
+			    		+"  en:"+Charcode.FONTS[cc.getFontIndex()].getFontName(Locale.ENGLISH)
+	    				+" fx: family:" + Charcode.xarFonts[cc.getFontIndex()].getFamily() 
+	    				+" ; Name:" + Charcode.xarFonts[cc.getFontIndex()].getName());
 			    //----
 		    }
 		    xarView1.setImage(XLM);
@@ -158,7 +160,7 @@ public class TableView{
 		double layouty = Tiles.getTileHeight()/2;
 		
 		
-		labelFontSel = new Label("Font Select     @unicodepicker-"+Main.ABOUT);
+		labelFontSel = new Label("Font Select     @unicodepicker-"+Main.ABOUT+"-v0.0.3");
 		labelFontSel.setLayoutX(layoutx);
 		labelFontSel.setLayoutY(layouty/2);
 		
@@ -294,7 +296,7 @@ public class TableView{
 			}
 			
 		});
-		ViewSizeLargerBTN= new Button("⬊");
+		ViewSizeLargerBTN= new Button("+");
 		ViewSizeLargerBTN.setLayoutX(layoutx+Tiles.RECTWIDTH*4.5);
 		ViewSizeLargerBTN.setLayoutY(layouty+controllerspan*5);
 		ViewSizeLargerBTN.setOnAction(new EventHandler(){
@@ -312,7 +314,7 @@ public class TableView{
 			}
 			
 		});
-		ViewSizeSmallerBTN= new Button("⬉");
+		ViewSizeSmallerBTN= new Button("-");
 		ViewSizeSmallerBTN.setLayoutX(layoutx+Tiles.RECTWIDTH*4);
 		ViewSizeSmallerBTN.setLayoutY(layouty+controllerspan*5);
 		ViewSizeSmallerBTN.setOnAction(new EventHandler(){
