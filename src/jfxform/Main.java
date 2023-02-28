@@ -3,7 +3,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application{
-	public final static String ABOUT = "jre8";
+	public final static String ABOUT = "v0.0.5";
 	
 	
 	public static void main(String []args) {

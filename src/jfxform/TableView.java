@@ -158,7 +158,7 @@ public class TableView{
 		double layouty = Tiles.getTileHeight()/2;
 		
 		
-		labelFontSel = new Label("Font Select     @unicodepicker-"+Main.ABOUT+"-v0.0.3");
+		labelFontSel = new Label("Font Select     @unicodepicker-"+Main.ABOUT);
 		labelFontSel.setLayoutX(layoutx);
 		labelFontSel.setLayoutY(layouty/2);
 		
