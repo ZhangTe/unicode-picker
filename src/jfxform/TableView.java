@@ -164,6 +164,7 @@ public class TableView{
 		labelFontSel.setLayoutX(layoutx);
 		labelFontSel.setLayoutY(layouty/2);
 		
+		
 		FontSelCb = new ChoiceBox<String>();
 		for (int i = 0 ; i < Charcode.FONTS.length; i ++)
 			FontSelCb.getItems().add(Charcode.FONTS[i].getFamily()+" "
@@ -171,7 +172,7 @@ public class TableView{
 					+Charcode.FONTS[i].getFontName() + " " 
 					+Charcode.FONTS[i].getName());
 		
-		
+		//FontSelCb.set
 		FontSelCb.setLayoutX(layoutx);
 		FontSelCb.setLayoutY(layouty);
 		 // add a listener 

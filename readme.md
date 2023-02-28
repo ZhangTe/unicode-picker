@@ -19,7 +19,7 @@ Run
 java -jar {jar file path}\codechart.jar 
 ```
 
-### JAVA 11 以上
+### JAVA 11 or later
 
 Download and setup JRE(OpenJDK),
 then Download and unzip JAVAFX module.<br/>
