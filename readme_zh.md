@@ -34,8 +34,8 @@ Windows下环境（JRE 7 ~ 10 ）配好双击即可打开。
 java -jar --module-path "{javafx模块解压路径}\lib" --add-modules javafx.controls,javafx.fxml {jar执行程序位置}\codechart.jar 
 ```
 
->[JAVAFX SDK下载 平均约40M，解压后约90M](https://gluonhq.com/products/javafx/)
->[华为云 JDK 下载 平均约180M，解压后约300M](https://mirrors.huaweicloud.com/java/jdk/)
+>[JAVAFX SDK下载 平均约40M，解压后约90M](https://gluonhq.com/products/javafx/)<br/>
+>[华为云 JDK 下载 平均约180M，解压后约300M](https://mirrors.huaweicloud.com/java/jdk/)<br/>
 >[OpenJDK 19 下载 平均约180M。解压后约300M](https://jdk.java.net/19/)
 
 ***

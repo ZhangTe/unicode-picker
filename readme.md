@@ -31,8 +31,8 @@ java -jar --module-path "{javafx module path}\lib" --add-modules javafx.controls
 ```
 
 >Downloads:
->[JAVAFX SDK](https://gluonhq.com/products/javafx/)
->[华为云 JDK](https://mirrors.huaweicloud.com/java/jdk/)
+>[JAVAFX SDK](https://gluonhq.com/products/javafx/)<br/>
+>[Huawei Cloud JDK](https://mirrors.huaweicloud.com/java/jdk/)<br/>
 >[OpenJDK 19](https://jdk.java.net/19/)
 
 ***
